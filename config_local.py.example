@@ -1,0 +1,91 @@
+# config_local.py.example — Configuration template for Study Buddy
+#
+# Copy this file to config_local.py and fill in your values.
+# config_local.py is gitignored and will never be committed.
+#
+# See docs/setup-guide.md for instructions on finding each value.
+
+# ── School calendar ────────────────────────────────────────────────────────────
+# Your student's school iCal feed URL. Typically found in the school portal
+# under Calendar > Subscribe or Export. Keep this private — it grants read
+# access to the student's full schedule.
+ICAL_URL = "https://yourschool.example.com/feed/iCal.aspx?z=YOUR_TOKEN_HERE"
+
+# Student's local timezone (pytz string)
+TIMEZONE = "America/New_York"
+
+# ── TickTick ───────────────────────────────────────────────────────────────────
+# The 24-character hex ID of the student's TickTick list.
+# Ask Claude: "List my TickTick projects and show me the IDs"
+TICKTICK_PROJECT_ID = "YOUR_TICKTICK_PROJECT_ID_HERE"
+
+# ── Subjects ───────────────────────────────────────────────────────────────────
+# Maps iCal course name prefixes to TickTick tag names.
+# Keys must be prefixes of how courses appear in the iCal SUMMARY field.
+# Values must exactly match existing tag names in TickTick (case-sensitive).
+#
+# To find your course name prefixes, run:
+#   python3 study_buddy.py --list-courses
+SUBJECT_TAGS = {
+    "English 10":   "English",
+    "Algebra II":   "Algebra",
+    "AP Biology":   "Biology",
+    "US History":   "History",
+    # Add all subjects here
+}
+
+# Short display names used in task titles (can be the same as tags)
+SUBJECT_SHORT = {
+    "English 10":   "English",
+    "Algebra II":   "Algebra",
+    "AP Biology":   "Biology",
+    "US History":   "History",
+}
+
+# Teacher full names — used in "Book office hours: [name]" follow-up tasks
+TEACHERS = {
+    "English 10":   "Ms. Smith",
+    "Algebra II":   "Mr. Johnson",
+    "AP Biology":   "Dr. Patel",
+    "US History":   "Ms. Williams",
+}
+
+# ── School calendar keywords ───────────────────────────────────────────────────
+# If any of these strings appear in a calendar event summary, the entire day
+# is treated as no-school and no tasks are generated.
+NO_SCHOOL_KEYWORDS = [
+    "No School", "Holiday", "Winter Break", "Spring Break",
+    "Thanksgiving", "Summer", "Offices Closed",
+]
+
+# ── Task timing ───────────────────────────────────────────────────────────────
+# All times in 24-hour format, local time.
+# Adjust to match your student's after-school schedule.
+TIMES = {
+    "school_light":   "18:00",   # Mon-Thu: light tasks (reading, short homework)
+    "school_heavy":   "19:30",   # Mon-Thu: heavy tasks (test prep, essays)
+    "school_review":  "21:00",   # Mon-Thu: standing review tasks (vocab, practice)
+    "friday_light":   "15:00",   # Friday: light tasks (early dismissal)
+    "friday_heavy":   "16:30",   # Friday: heavy tasks
+    "sunday_light":   "18:00",
+    "sunday_heavy":   "19:30",
+    "sunday_review":  "21:00",
+    "game_light":     "20:00",   # Sports game evening: tasks shifted late
+    "weekly_debrief": "15:30",   # Friday debrief task
+}
+
+# ── Skip patterns ─────────────────────────────────────────────────────────────
+# Calendar event titles (or substrings) that should NOT be treated as
+# assignments. Anything matching one of these strings gets filtered out before
+# the task generator runs. Customize for your school. Common examples:
+# class period blocks, lunch, religious services, advisory periods, assemblies,
+# the school's name appearing as a calendar tag, sports practice, etc.
+SKIP_PATTERNS = [
+    "Block)",          # class period blocks like "(A Block)"
+    "Lunch",
+    "Advisory",
+    "Assembly",
+    "Community Service",
+    "Holiday",
+    # Add anything else from your school calendar that is not homework
+]

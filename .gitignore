@@ -1,0 +1,14 @@
+# Personal configuration. Real credentials live here. Never push.
+config_local.py
+
+# Local-only drafts (Substack posts, sanitization WIP). Never push.
+_drafts/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# macOS
+.DS_Store
